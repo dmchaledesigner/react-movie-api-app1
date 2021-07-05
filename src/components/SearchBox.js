@@ -1,26 +1,24 @@
-import React from 'react';
+import React from 'react'
 
-const SearchBox = ({ searchValue, setSearchValue }) => {
+const searchBox = ({ searchValue, setSearchValue }) => {
 
-    const getValue = (e) => {
+    const inputHandler = (e) => {
         const value = e.target.value;
-        setSearchValue(value)
-
+        setSearchValue(value);
     }
 
     return (
         <div className='col col-sm-4'>
 
             <input
-                className='form-control'
-                onChange={getValue}
+                onChange={inputHandler}
                 value={searchValue}
-                placeholder='Type to search...' >
-
-            </input>
+                className='form-control'
+                placeholder='Type to search...'
+            />
 
         </div>
-    );
-};
+    )
+}
 
-export default SearchBox;
+export default searchBox
