@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import MovieList from './components/MovieList';
 import Heading from './components/Heading';
 import SearchBox from './components/SearchBox';
-
+import AddFavourites from './components/AddFavourites';
 
 
 
@@ -11,6 +11,7 @@ function App() {
 
   const [movies, setMovies] = useState([]);
   const [searchValue, setSearchValue] = useState('');
+  const [favourites, setFavourites] = useState([])
 
 
   const getMovieRequest = async (searchValue) => {
@@ -21,8 +22,8 @@ function App() {
     const data = resJSON.Search;
 
 
-    if (data) { // if there is data then setMoveis to display the data
-      setMovies(data);
+    if (data) { // if there is data then s
+      setMovies(data); // setMoveis to display the data from the api
     }
 
     if (searchValue === '' || null) { // if the earch field is empty
@@ -32,18 +33,25 @@ function App() {
 
 
 
+  // add to favourites function
 
 
 
   useEffect(() => {
     getMovieRequest(searchValue);
-  }, [searchValue]);
+  }, [searchValue]); // dislay data when the serchValue changes state
 
+
+  const addFavouriteMovie = (movie) => {
+    setFavourites([
+      ...favourites, movie
+    ])
+  }
 
 
   return (
-    <div className="container-fluid movie-app">
-      <div className="row">
+    <div className='container-fluid movie-app'>
+      <div className='row d-flex align-items-center mt-4 mb-4'>
         <Heading />
 
         <SearchBox
@@ -52,8 +60,24 @@ function App() {
         />
 
       </div>
-      <div className="row d-flex align-items-center mt-4 mb-4">
-        <MovieList movies={movies} />
+      <div className='row'>
+        <MovieList
+          allMovies={movies}
+          favouriteComponent={AddFavourites}
+          handleFavouritesClick={addFavouriteMovie}
+        />
+      </div>
+
+
+
+      <div className='row d-flex align-items-center mt-4 mb-4'>
+        <Heading heading='Favourites' />
+      </div>
+      <div className='row'>
+        <MovieList
+          allMovies={favourites}
+          favouriteComponent={AddFavourites}
+        />
       </div>
     </div>
   );
