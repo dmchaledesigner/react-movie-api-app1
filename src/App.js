@@ -1,78 +1,59 @@
-import React, { useState, useEffect } from 'react';
-
-
-import MovieHeading from './components/MovieHeading';
+import { useState, useEffect } from 'react';
 import MovieList from './components/MovieList';
+import Heading from './components/Heading';
 import SearchBox from './components/SearchBox';
-import AddFavourite from './components/AddFavourite';
+
+
 
 
 function App() {
 
 
   const [movies, setMovies] = useState([]);
-  const [searchValue, setSearchValue] = useState('')
-  const [favourites, setFavourites] = useState([])
+  const [searchValue, setSearchValue] = useState('');
 
 
-
-
-  const getMovieData = async (searchValue) => {
+  const getMovieRequest = async (searchValue) => {
     const url = `http://www.omdbapi.com/?s=${searchValue}&apikey=283540c6`;
+
     const response = await fetch(url);
-    const resJson = await response.json();
-    const data = resJson.Search;
-    if (data) {
-      setMovies(data)
+    const resJSON = await response.json();
+    const data = resJSON.Search;
+
+
+    if (data) { // if there is data then setMoveis to display the data
+      setMovies(data);
     }
 
+    if (searchValue === '' || null) { // if the earch field is empty
+      setSearchValue('star wars') // set the searchValue to a default movie
+    }
   }
 
 
-  const addFavouriteMovie = (movie) => {
-    setFavourites(favourites =>
-      [...favourites, movie]
-    )
 
 
-  }
 
 
   useEffect(() => {
-    getMovieData(searchValue)
+    getMovieRequest(searchValue);
   }, [searchValue]);
 
 
 
-
-
   return (
-    <div className='container-fluid movie-app'>
-      <div className='row d-flex align-items-center mt-4 mb-4'>
-        <MovieHeading heading='Movies' />
+    <div className="container-fluid movie-app">
+      <div className="row">
+        <Heading />
 
-        <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
-
-      </div>
-      <div className='row'>
-        <MovieList
-          movies={movies}
-          favouriteComponent={AddFavourite}
-          addFavMoviesHandle={addFavouriteMovie}
+        <SearchBox
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
         />
 
       </div>
-      <div className='row d-flex align-items-center mt-4 mb-4'>
-        <MovieHeading heading='Favourites' />
-      </div>
-      <div className='row'>
-
-        <MovieList
-          movies={favourites}
-          favouriteComponent={AddFavourite}
-          addFavMoviesHandle={addFavouriteMovie}
-        />
-
+      <div className="row d-flex align-items-center mt-4 mb-4">
+        <MovieList movies={movies} />
       </div>
     </div>
   );
