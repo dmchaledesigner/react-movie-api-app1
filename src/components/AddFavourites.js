@@ -22,7 +22,7 @@ const AddFavourite = ({ title }) => {
 };
 
 AddFavourite.defaultProps = {
-	title: 'Add to something',
+	title: 'Add to Favourites',
 }
 
 export default AddFavourite;

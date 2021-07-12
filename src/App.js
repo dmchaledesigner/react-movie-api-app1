@@ -3,6 +3,7 @@ import MovieList from './components/MovieList';
 import Heading from './components/Heading';
 import SearchBox from './components/SearchBox';
 import AddFavourites from './components/AddFavourites';
+import RemoveFavourites from './components/RemoveFavourites';
 
 
 
@@ -33,7 +34,7 @@ function App() {
 
 
 
-  // add to favourites function
+
 
 
 
@@ -42,12 +43,21 @@ function App() {
   }, [searchValue]); // dislay data when the serchValue changes state
 
 
+
+  // add to favourites function
   const addFavouriteMovie = (movie) => {
     setFavourites([
       ...favourites, movie
     ])
   }
 
+
+  const removeFavouriteMovie = (movie) => {
+    const newFavouriteList = favourites.filter(favourite => favourite.imdbID !== movie.imdbID
+    );
+
+    setFavourites(newFavouriteList);
+  };
 
   return (
     <div className='container-fluid movie-app'>
@@ -62,9 +72,9 @@ function App() {
       </div>
       <div className='row'>
         <MovieList
-          allMovies={movies}
-          favouriteComponent={AddFavourites}
-          handleFavouritesClick={addFavouriteMovie}
+          allMovies={movies} // prop allMovies takes in the state 'movies'
+          favouriteComponent={AddFavourites} // component prop with function AddFavourites
+          handleFavouritesClick={addFavouriteMovie} // click prop with addFavouriteMovie funtion
         />
       </div>
 
@@ -75,8 +85,9 @@ function App() {
       </div>
       <div className='row'>
         <MovieList
-          allMovies={favourites}
-          favouriteComponent={AddFavourites}
+          allMovies={favourites} // prop allMovies takes in the state 'favourites'
+          favouriteComponent={RemoveFavourites} // component prop with function RemoveFavourites 
+          handleFavouritesClick={removeFavouriteMovie} // //click prop with Remove FavouriteMovie funtion
         />
       </div>
     </div>
